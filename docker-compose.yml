@@ -28,8 +28,6 @@ services:
       MYSQL_PASSWORD: ${DB_PASS}
     volumes:
       - nextcloud_data:/var/www/html
-    networks:
-      - webnet
 
   proxy:
     image: nginx:alpine
@@ -51,6 +49,3 @@ volumes:
   nextcloud_data:
   certs:
   proxy_data:
-
-networks:
-  webnet:
