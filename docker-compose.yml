@@ -1,0 +1,48 @@
+version: "3.8"
+services:
+  proxy:
+    image: nginx:alpine
+    restart: unless-stopped
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - certs:/etc/letsencrypt
+      - proxy_data:/usr/share/nginx/html
+    ports:
+      - "80:80"
+      - "443:443"
+
+  volumes:
+    certs:
+    proxy_data:
+
+  db:
+    image: mariadb:10.11
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+    volumes:
+      - db_data:/var/lib/mysql
+
+  app:
+    image: nextcloud:28
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "8080:80"
+    env_file: .env
+    environment:
+      MYSQL_HOST: db
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+    volumes:
+      - nextcloud_data:/var/www/html
+
+volumes:
+  db_data:
+  nextcloud_data:
