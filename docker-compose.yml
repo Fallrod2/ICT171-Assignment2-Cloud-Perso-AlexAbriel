@@ -18,8 +18,8 @@ services:
     restart: unless-stopped
     depends_on:
       - db
-    expose:
-      - "80" # expose container port 80 only
+    ports:
+      - "8080:80" # expose container port 80 only
     env_file: .env
     environment:
       MYSQL_HOST: db
