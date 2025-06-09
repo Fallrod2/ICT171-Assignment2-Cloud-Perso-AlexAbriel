@@ -41,8 +41,8 @@ services:
       - "443:443" # host 443 → container 443
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - certs:/etc/letsencrypt
-      - proxy_data:/usr/share/nginx/html
+      - ./certs:/etc/letsencrypt
+      - ./proxy_data:/usr/share/nginx/html
     networks:
       - webnet
 
